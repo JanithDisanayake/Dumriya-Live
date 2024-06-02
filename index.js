@@ -1,20 +1,14 @@
-const express = require('express')
-const serverless = require('serverless-http')
-const app = express()
-const port = 3003
+const express = require("express");
+const serverless = require("serverless-http");
+const app = require("./app/app");
+require("dotenv").config();
 
-app.use(express.json());
+const PORT = process.env.PORT || 3003;
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
-});
-
-
-
-if(process.env.ENVIRONMENT === "lambda") {
-	module.exports.handler = serverless(app);
+if (process.env.ENVIRONMENT === "lambda") {
+  module.exports.handler = serverless(app);
 } else {
-	app.listen(port, () => {
-		console.log(`Example app listening on port ${port}`)
-	});
+  app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}`);
+  });
 }
