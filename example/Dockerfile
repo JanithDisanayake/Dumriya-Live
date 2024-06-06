@@ -1,8 +1,15 @@
-FROM amazon/aws-lambda-nodejs 
+# Use the official AWS Lambda Node.js base image
+FROM amazon/aws-lambda-nodejs
 
 # Copy function code
-COPY app.js ${LAMBDA_TASK_ROOT}
+COPY index.js ${LAMBDA_TASK_ROOT}
+COPY package*.json ${LAMBDA_TASK_ROOT}
+COPY node_modules ${LAMBDA_TASK_ROOT}
 
-# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
-CMD [ "app.handler" ]
+# Install dependencies
+RUN npm install
 
+EXPOSE 8080
+
+# Command to run the Lambda function
+CMD ["index.handler"]
