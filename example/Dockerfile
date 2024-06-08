@@ -2,10 +2,11 @@
 FROM amazon/aws-lambda-nodejs
 
 # Copy function code
-COPY package*.json ${LAMBDA_TASK_ROOT}
-COPY node_modules ${LAMBDA_TASK_ROOT}
-COPY app.js ${LAMBDA_TASK_ROOT}
+COPY package*.json ${LAMBDA_TASK_ROOT}/
 RUN npm install
+
+# Copy rest of the application code
+COPY . ${LAMBDA_TASK_ROOT}
 
 # Command to run the Lambda function
 CMD ["app.handler"]
