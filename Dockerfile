@@ -1,7 +1,12 @@
-FROM node:18
-WORKDIR /usr/src/app
-COPY package*.json ./
+# Use the official AWS Lambda Node.js base image
+FROM amazon/aws-lambda-nodejs
+
+# Copy function code
+COPY package*.json ${LAMBDA_TASK_ROOT}/
 RUN npm install
-COPY . .
-EXPOSE 3003
-CMD [ "node", "index.js" ]
+
+# Copy rest of the application code
+COPY . ${LAMBDA_TASK_ROOT}
+
+# Command to run the Lambda function
+CMD ["app.handler"]
