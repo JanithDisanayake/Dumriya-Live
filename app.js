@@ -19,7 +19,7 @@ app.use("/users", userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-if(process.env.ENVIRONMENT === "development") {
+if(process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
 	app.listen(port, () => {
 		console.log(`Example app listening on port ${port}`)
 	});
