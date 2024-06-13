@@ -19,4 +19,10 @@ app.use("/users", userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-module.exports.handler = serverless(app);
+if(process.env.ENVIRONMENT === "development") {
+	app.listen(port, () => {
+		console.log(`Example app listening on port ${port}`)
+	});
+} else {
+	module.exports.handler = serverless(app);
+}
