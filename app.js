@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const { swaggerSpec } = require('./swagger'); 
 const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 app.use("/users", userRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 if(process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
