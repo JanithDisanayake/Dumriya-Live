@@ -3,13 +3,15 @@ const express = require("express");
 const serverless = require("serverless-http");
 const path = require('path');
 const app = express();
-
+// Swagger
 const swaggerUi = require('swagger-ui-express');
 const { swaggerSpec } = require('./swagger'); 
-const userRoutes = require("./routes/userRoutes");
+// Authentication
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+// Routes
+const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT
 
@@ -18,6 +20,7 @@ app.use(bodyParser.json());
 
 
 const users = [];
+const secretKey = process.env.SECRET_KEY;
 
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
@@ -46,23 +49,32 @@ app.post('/login', async (req, res) => {
         return res.status(400).send('Invalid password');
     }
 
-    const token = jwt.sign({ username: user.username }, 'secret_key', { expiresIn: '1h' });
+    const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1h' });
 
     res.json({ token });
 });
 
 const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization');
+    const authHeader = req.header('Authorization');
+    
+    if (!authHeader) {
+        console.log('No Authorization header');
+        return res.status(401).send('Access denied');
+    }
+
+    const token = authHeader.split(' ')[1];
 
     if (!token) {
+        console.log('No token in header');
         return res.status(401).send('Access denied');
     }
 
     try {
-        const decoded = jwt.verify(token, 'secret_key');
+        const decoded = jwt.verify(token, secretKey);
         req.user = decoded;
         next();
     } catch (err) {
+        console.log('Token verification failed', err.message);
         res.status(400).send('Invalid token');
     }
 };
