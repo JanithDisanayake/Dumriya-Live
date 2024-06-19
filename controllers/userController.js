@@ -1,3 +1,9 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const users = [];
+const secretKey = process.env.SECRET_KEY;
+
 /**
  * @swagger
  * /api/users:
@@ -18,11 +24,29 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.login = async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(u => u.username === username);
+  if (!user) {
+      return res.status(400).send('User not found');
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+      return res.status(400).send('Invalid password');
+  }
+
+  const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1h' });
+
+  res.json({ token });
+};
+
 /**
  * @swagger
  * /api/users:
  *   post:
- *     summary: Create a new user
+ *     summary: Register a new user
  *     description: Create a new user in the database.
  *     requestBody:
  *       required: true
@@ -72,16 +96,16 @@ exports.getAllUsers = async (req, res) => {
  *                 message:
  *                   type: string
  */
-exports.createUser = async (req, res) => {
-  const user = {
-    name: req.body.name,
-    age: req.body.age,
-    email: req.body.email,
-  };
+exports.register = async (req, res) => {
+  const { username, password } = req.body;
 
-  try {
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+  if (!username || !password) {
+      return res.status(400).send('Username and password are required');
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  users.push({ username, password: hashedPassword });
+
+  res.status(201).send('User registered successfully');
 };
