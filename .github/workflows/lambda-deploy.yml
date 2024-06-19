@@ -3,7 +3,7 @@ name: Build and Deploy to AWS Lambda
 on:
   push:
     branches:
-      - feat-lambda-deploy
+      - qa
 
 jobs:
   build-and-deploy:
