@@ -3,14 +3,26 @@ const express = require("express");
 const serverless = require("serverless-http");
 const path = require('path');
 const app = express();
-
+// Swagger
 const swaggerUi = require('swagger-ui-express');
 const { swaggerSpec } = require('./swagger'); 
+// Authentication
+const bodyParser = require('body-parser');
+// Routes
 const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT
 
+const authenticateJWT = require('./middleware/authMiddleware')
+
 app.use(express.json());
+app.use(bodyParser.json());
+
+
+app.get('/protected', authenticateJWT, (req, res) => {
+    res.send('This is a protected route');
+});
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
