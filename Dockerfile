@@ -10,6 +10,7 @@ COPY . ${LAMBDA_TASK_ROOT}
 
 # Set environment variable
 ENV ENVIRONMENT=lambda
+ENV SECRET_KEY=supersecretkey123456!@#
 
 # Command to run the Lambda function
 CMD ["app.handler"]
