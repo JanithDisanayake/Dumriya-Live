@@ -1,40 +1,37 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const serverless = require("serverless-http");
-const path = require('path');
+const path = require("path");
 const app = express();
 // Swagger
-const swaggerUi = require('swagger-ui-express');
-const { swaggerSpec } = require('./swagger'); 
+const swaggerUi = require("swagger-ui-express");
+const { swaggerSpec } = require("./swagger");
 // Authentication
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 // Routes
 const userRoutes = require("./routes/userRoutes");
 
-const port = process.env.PORT
+const port = process.env.PORT;
 
-const authenticateJWT = require('./middleware/authMiddleware')
+const authenticateJWT = require("./middleware/authMiddleware");
 
 app.use(express.json());
 app.use(bodyParser.json());
 
-
-app.get('/protected', authenticateJWT, (req, res) => {
-    res.send('This is a protected route');
+app.get("/protected", authenticateJWT, (req, res) => {
+  res.send("This is a protected route");
 });
 
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 app.use("/users", userRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
-if(process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
-	app.listen(port, () => {
-		console.log(`Example app listening on port ${port}`)
-	});
+if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
 } else {
-	module.exports.handler = serverless(app);
+  module.exports.handler = serverless(app);
 }
