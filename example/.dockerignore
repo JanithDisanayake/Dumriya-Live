@@ -1,9 +1,0 @@
-node_modules
-*.log
-*.md
-*.zip
-
-.dockerignore
-.git
-.gitignore
-
