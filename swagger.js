@@ -15,7 +15,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./controllers/*.js'], // Path to the API routes and controllers folder
+  apis: ['./swagger/swagger.yaml'], // Path to the API routes and controllers folder
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

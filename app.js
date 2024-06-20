@@ -18,10 +18,6 @@ const authenticateJWT = require("./middleware/authMiddleware");
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.get("/protected", authenticateJWT, (req, res) => {
-  res.send("This is a protected route");
-});
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
