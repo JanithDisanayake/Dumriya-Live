@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const admins = [{
     username: "admin",
-    password: "asdf"
+    password: "$2a$04$mlIZVeXTclLzcQMs1IVsgeE3vmQXq.81FJpGZGiTa5qbYj8BD80L."
 }];
 const secretKey = process.env.SECRET_KEY;
 
@@ -17,9 +17,9 @@ exports.login = async (req, res) => {
     return res.status(400).send("User not found");
   }
 
-  const isPasswordValid = (password === admin.password)
-  console.log(await bcrypt.compare(password, admin.password))
+  const isPasswordValid = await bcrypt.compare(password, admin.password);
   if (!isPasswordValid) {
+    console.log(await bcrypt.hash(password, 1))
     return res.status(400).send("Invalid password");
   }
 
