@@ -1,8 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const users = [];
 const secretKey = process.env.SECRET_KEY;
+const users = [{
+  username: "admin",
+  password: "$2a$04$mlIZVeXTclLzcQMs1IVsgeE3vmQXq.81FJpGZGiTa5qbYj8BD80L.",
+  role: "admin"
+}];
 
 exports.getAll = async (req, res) => {
   try {
@@ -25,7 +29,7 @@ exports.login = async (req, res) => {
     return res.status(400).send("Invalid password");
   }
 
-  const token = jwt.sign({ username: user.username }, secretKey, {
+  const token = jwt.sign({ username: user.username, role: user.role }, secretKey, {
     expiresIn: "1h",
   });
 
