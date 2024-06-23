@@ -17,7 +17,7 @@ exports.getAll = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
 
   const user = users.find((u) => u.username === username);
   if (!user) {
@@ -27,6 +27,10 @@ exports.login = async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return res.status(400).send("Invalid password");
+  }
+
+  if (role !== user.role) {
+    return res.status(400).send("Invalid role");
   }
 
   const token = jwt.sign({ username: user.username, role: user.role }, secretKey, {
