@@ -52,7 +52,7 @@ exports.register = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  users.push({ username, password: hashedPassword });
+  users.push({ username, password: hashedPassword, role: 'user' });
 
   res.status(201).send("User registered successfully");
 };
