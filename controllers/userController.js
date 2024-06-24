@@ -29,7 +29,10 @@ exports.login = async (req, res) => {
     return res.status(400).send("Invalid password");
   }
 
-  if (role !== user.role) {
+  if (!role) {
+    return res.status(400).send("Role is missing");
+  
+  } else if (role !== user.role) {
     return res.status(400).send("Invalid role");
   }
 
