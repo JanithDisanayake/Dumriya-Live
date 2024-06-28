@@ -1,8 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const users = [];
 const secretKey = process.env.SECRET_KEY;
+const users = [{
+  username: "admin",
+  password: "$2a$04$mlIZVeXTclLzcQMs1IVsgeE3vmQXq.81FJpGZGiTa5qbYj8BD80L.",
+  role: "admin"
+}];
 
 exports.getAll = async (req, res) => {
   try {
@@ -13,7 +17,7 @@ exports.getAll = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
 
   const user = users.find((u) => u.username === username);
   if (!user) {
@@ -25,7 +29,14 @@ exports.login = async (req, res) => {
     return res.status(400).send("Invalid password");
   }
 
-  const token = jwt.sign({ username: user.username }, secretKey, {
+  if (!role) {
+    return res.status(400).send("Role is missing");
+  
+  } else if (role !== user.role) {
+    return res.status(400).send("Invalid role");
+  }
+
+  const token = jwt.sign({ username: user.username, role: user.role }, secretKey, {
     expiresIn: "1h",
   });
 
@@ -41,7 +52,7 @@ exports.register = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  users.push({ username, password: hashedPassword });
+  users.push({ username, password: hashedPassword, role: 'user' });
 
   res.status(201).send("User registered successfully");
 };
