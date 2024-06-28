@@ -10,11 +10,8 @@ const { swaggerSpec } = require("./swagger");
 const bodyParser = require("body-parser");
 // Routes
 const userRoutes = require("./routes/userRoutes");
-const adminRoutes = require("./routes/adminRoutes");
 
 const port = process.env.PORT;
-
-const authenticateJWT = require("./middleware/authMiddleware");
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -22,7 +19,6 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-app.use("/admins", adminRoutes);
 app.use("/users", userRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
