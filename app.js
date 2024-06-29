@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const serverless = require("serverless-http");
+const connectDB = require("./db");
 const path = require("path");
 const app = express();
+const port = process.env.PORT;
 // Swagger
 const swaggerUi = require("swagger-ui-express");
 const { swaggerSpec } = require("./swagger");
@@ -10,8 +12,8 @@ const { swaggerSpec } = require("./swagger");
 const bodyParser = require("body-parser");
 // Routes
 const userRoutes = require("./routes/userRoutes");
-
-const port = process.env.PORT;
+// Connect to MongoDB
+connectDB();
 
 app.use(express.json());
 app.use(bodyParser.json());
