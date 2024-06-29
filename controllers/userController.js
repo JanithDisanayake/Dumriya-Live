@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 const secretKey = process.env.SECRET_KEY;
 const users = [
@@ -65,6 +66,8 @@ exports.register = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  const user = new User({ username, password: hashedPassword, role: "user" });
+  await user.save();
   users.push({ username, password: hashedPassword, role: "user" });
 
   res.status(201).send("User registered successfully");
