@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 app.use("/users", userRoutes);
+app.use("/stations", stationRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
