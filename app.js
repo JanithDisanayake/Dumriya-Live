@@ -12,6 +12,7 @@ const { swaggerSpec } = require("./swagger");
 const bodyParser = require("body-parser");
 // Routes
 const userRoutes = require("./routes/userRoutes");
+const stationRoutes = require("./routes/stationRoutes");
 // Connect to MongoDB
 connectDB();
 
