@@ -1,23 +1,19 @@
-let stations = [
-  { id: 1, name: "Station A", location: "City A" },
-  { id: 2, name: "Station B", location: "City B" },
-];
+const Station = require("../models/stationModel");
 
 exports.getAll = async (req, res) => {
+  const stations = await Station.find();
   res.status(200).json(stations);
 };
 
 exports.getById = async (req, res) => {};
 
 exports.register = async (req, res) => {
-  const { name, location } = req.body;
-
-  users.push({
-    id: routes.length + 1,
-    name,
-    location,
+  const station = new Station({
+    name: req.body.name,
+    location: req.body.location,
   });
-  res.status(201).json(newRoute);
+  await station.save();
+  res.status(201).json(station);
 };
 
 exports.update = async (req, res) => {};
