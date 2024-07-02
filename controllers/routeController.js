@@ -1,24 +1,21 @@
-let routes = [
-  { id: 1, start: "Station A", end: "Station B", distance: 100 },
-  { id: 2, start: "Station B", end: "Station C", distance: 150 },
-];
+const Route = require("../models/routeModel");
 
 exports.getAll = async (req, res) => {
+  const routes = await Route.find();
   res.status(200).json(routes);
 };
 
 exports.getById = async (req, res) => {};
 
 exports.register = async (req, res) => {
-  const { start, end, distance } = req.body;
-
-  users.push({
-    id: routes.length + 1,
-    start,
-    end,
-    distance,
+  console.log("Hello");
+  const route = new Route({
+    start: req.body.start,
+    end: req.body.end,
+    distance: req.body.distance,
   });
-  res.status(201).json(newRoute);
+  await route.save();
+  res.status(201).json(route);
 };
 
 exports.update = async (req, res) => {};
