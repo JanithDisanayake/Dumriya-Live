@@ -7,8 +7,16 @@ const stationSchema = new Schema({
     required: true,
   },
   location: {
-    type: String,
-    required: true,
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
   },
 });
 
