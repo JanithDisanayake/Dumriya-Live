@@ -14,6 +14,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const trainRoutes = require("./routes/trainRoutes");
 const stationRoutes = require("./routes/stationRoutes");
+const routeRoutes = require("./routes/routeRoutes");
 // Connect to MongoDB
 connectDB();
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/trains", trainRoutes);
 app.use("/stations", stationRoutes);
+app.use("/routes", routeRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {
