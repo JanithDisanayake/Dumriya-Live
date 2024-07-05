@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const GeoPoint = require("./GeoLocation");
 
 const stationSchema = new Schema({
   name: {

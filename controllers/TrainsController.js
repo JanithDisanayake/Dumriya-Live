@@ -1,4 +1,4 @@
-const Train = require("../models/trainModel");
+const Train = require("../models/Train.js");
 
 exports.getAll = async (req, res) => {
   const trains = await Train.find();

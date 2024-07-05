@@ -1,4 +1,4 @@
-const Station = require("../models/stationModel");
+const Station = require("../models/Station");
 
 exports.getAll = async (req, res) => {
   const stations = await Station.find();

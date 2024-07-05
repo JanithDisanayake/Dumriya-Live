@@ -11,10 +11,10 @@ const { swaggerSpec } = require("./swagger");
 // Authentication
 const bodyParser = require("body-parser");
 // Routes
-const userRoutes = require("./routes/userRoutes");
-const trainRoutes = require("./routes/trainRoutes");
-const stationRoutes = require("./routes/stationRoutes");
-const routeRoutes = require("./routes/routeRoutes");
+const userRoutes = require("./routes/UsersRoutes");
+const trainRoutes = require("./routes/TrainsRoutes");
+const stationRoutes = require("./routes/StationsRoutes");
+const routeRoutes = require("./routes/RoutesRoutes");
 // Connect to MongoDB
 connectDB();
 

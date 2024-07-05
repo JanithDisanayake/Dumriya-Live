@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const GeoPoint = require("./geoPoint");
+const GeoPoint = require("./GeoLocation");
 
 const routeSchema = new Schema({
   start: {

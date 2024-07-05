@@ -1,4 +1,4 @@
-const Route = require("../models/routeModel");
+const Route = require("../models/Route");
 
 exports.getAll = async (req, res) => {
   const routes = await Route.find();
