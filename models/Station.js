@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const GeoPoint = require("./GeoLocation");
+const GeoLocation = require("./GeoLocation");
 
 const stationSchema = new Schema({
   name: {
@@ -8,16 +8,8 @@ const stationSchema = new Schema({
     required: true,
   },
   location: {
-    type: {
-      type: String,
-      enum: ["Point"],
-      default: "Point",
-      required: true,
-    },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
+    type: GeoLocation,
+    required: true,
   },
 });
 
