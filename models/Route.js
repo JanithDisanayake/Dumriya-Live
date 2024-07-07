@@ -1,34 +1,25 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const GeoPoint = require("./GeoLocation");
+const GeoLocation = require("./GeoLocation");
+const Station = require("./Station");
 
 const routeSchema = new Schema({
   start: {
-    name: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: GeoPoint,
-      required: true,
-    },
+    type: Station,
+    require: true,
   },
   end: {
-    name: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: GeoPoint,
-      required: true,
-    },
+    type: Station,
+    require: true,
   },
   distance: {
     type: Number,
-    required: true,
+  },
+  stations: {
+    type: [Station],
   },
   coordinates: {
-    type: [GeoPoint],
+    type: [GeoLocation],
     required: true,
   },
 });
