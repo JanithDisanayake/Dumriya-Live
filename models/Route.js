@@ -24,6 +24,10 @@ const routeSchema = new Schema({
     },
   },
   distance: {
+    type: Number,
+    required: true,
+  },
+  coordinates: {
     type: [GeoPoint],
     required: true,
   },

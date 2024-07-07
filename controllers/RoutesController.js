@@ -8,7 +8,6 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {};
 
 exports.register = async (req, res) => {
-  console.log("Hello");
   const route = new Route({
     start: req.body.start,
     end: req.body.end,
