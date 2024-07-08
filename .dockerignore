@@ -1,5 +1,4 @@
 node_modules
-example
 *.log
 *.md
 *.zip
@@ -7,4 +6,4 @@ example
 .dockerignore
 .git
 .gitignore
-
+.env
