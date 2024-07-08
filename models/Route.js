@@ -5,18 +5,18 @@ const Station = require("./Station");
 
 const routeSchema = new Schema({
   start: {
-    type: Station,
+    type: Station.schema,
     require: true,
   },
   end: {
-    type: Station,
+    type: Station.schema,
     require: true,
   },
   distance: {
     type: Number,
   },
   stations: {
-    type: [Station],
+    type: [Station.schema],
   },
   coordinates: {
     type: [GeoLocation],
