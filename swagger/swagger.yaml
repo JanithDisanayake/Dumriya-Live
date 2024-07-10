@@ -8,6 +8,8 @@ paths:
   /users:
     get:
       summary: Get all users
+      tags: 
+        - Users
       security:
         - bearerAuth: []
       responses:
@@ -49,6 +51,8 @@ paths:
   /users/login:
     post:
       summary: User login
+      tags: 
+        - Users
       requestBody:
         required: true
         content:
@@ -84,6 +88,8 @@ paths:
   /users/register:
     post:
       summary: User registration
+      tags: 
+        - Users
       requestBody:
         required: true
         content:
