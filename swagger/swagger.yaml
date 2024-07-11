@@ -246,6 +246,24 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    GeoLocationInput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Point
+          description: The type of GeoLocation, must be "Point"
+          example: Point
+        coordinates:
+          type: array
+          items:
+            type: number
+          description: The coordinates of the GeoLocation as an array of two numbers (longitude and latitude)
+          example: [-73.856077, 40.848447]
+      required:
+        - type
+        - coordinates
     Train:
       type: object
       properties:
