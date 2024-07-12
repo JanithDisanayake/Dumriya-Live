@@ -246,7 +246,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    GeoLocationInput:
+    GeoLocation:
       type: object
       properties:
         type:
@@ -277,7 +277,6 @@ components:
           type: string
           description: The type of the train (e.g., cargo, passenger)
       required:
-        - id
         - name
         - type
     TrainInput:
@@ -302,10 +301,9 @@ components:
           type: string
           description: The name of the station
         location:
-          type: string
-          description: The location of the station
+          $ref: '#/components/schemas/GeoLocation'
+          description: The geographical location of the station
       required:
-        - id
         - name
         - location
     StationInput:
@@ -315,8 +313,8 @@ components:
           type: string
           description: The name of the station
         location:
-          type: string
-          description: The location of the station
+          $ref: '#/components/schemas/GeoLocation'
+          description: The geographical location of the station
       required:
         - name
         - location
@@ -327,32 +325,51 @@ components:
           type: string
           description: The unique identifier for the route
         start:
-          type: string
-          description: The starting location of the route
+          $ref: '#/components/schemas/Station'
+          description: The starting station of the route
         end:
-          type: string
-          description: The ending location of the route
+          $ref: '#/components/schemas/Station'
+          description: The ending station of the route
         distance:
           type: number
           description: The distance of the route in kilometers
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Station'
+          description: An array of stations along the route
+        coordinates:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoLocation'
+          description: The geographical coordinates of the route
       required:
-        - id
         - start
         - end
-        - distance
+        - coordinates
     RouteInput:
       type: object
       properties:
         start:
-          type: string
-          description: The starting location of the route
+          $ref: '#/components/schemas/StationInput'
+          description: The starting station of the route
         end:
-          type: string
-          description: The ending location of the route
+          $ref: '#/components/schemas/StationInput'
+          description: The ending station of the route
         distance:
           type: number
           description: The distance of the route in kilometers
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationInput'
+          description: An array of stations along the route
+        coordinates:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoLocation'
+          description: The geographical coordinates of the route
       required:
         - start
         - end
-        - distance
+        - coordinates
