@@ -7,4 +7,7 @@ router.get("/:id", trainController.getById);
 router.post("/", trainController.register);
 router.put("/:id", trainController.update);
 
+router.get("/live", trainController.getLive);
+router.post("/live", trainController.storeLive);
+
 module.exports = router;

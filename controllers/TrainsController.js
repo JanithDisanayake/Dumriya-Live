@@ -1,4 +1,5 @@
 const Train = require("../models/Train.js");
+const TrainLive = require("../models/TrainLive.js");
 
 exports.getAll = async (req, res) => {
   const trains = await Train.find();
@@ -14,3 +15,16 @@ exports.register = async (req, res) => {
 };
 
 exports.update = async (req, res) => {};
+
+exports.getLive = async (req, res) => {
+  const trainLive = await TrainLive.find();
+  res.status(200).json(trainLive);
+};
+
+exports.storeLive = async (req, res) => {
+  const trainLive = new TrainLive({ 
+    ...req.body
+  });
+  await trainLive.save();
+  res.status(201).json(trainLive);
+};
