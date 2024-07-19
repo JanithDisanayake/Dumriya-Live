@@ -8,6 +8,9 @@ router.post("/", trainController.register);
 router.put("/:id", trainController.update);
 
 router.get("/live", trainController.getLive);
-router.post("/live", trainController.storeLive);
+router.post("/live", trainController.getLive);
+
+router.get("/live_log", trainController.getLiveLog)
+router.post("/live_log", trainController.storeLiveLog)
 
 module.exports = router;
