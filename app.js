@@ -15,6 +15,7 @@ const userRoutes = require("./routes/UsersRoutes");
 const trainRoutes = require("./routes/TrainsRoutes");
 const stationRoutes = require("./routes/StationsRoutes");
 const routeRoutes = require("./routes/RoutesRoutes");
+const scheduleRoutes = require("./routes/SchedulesRoutes");
 // Connect to MongoDB
 connectDB();
 
@@ -25,9 +26,10 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 app.use("/users", userRoutes);
-app.use("/trains", trainRoutes);
+app.use("/trains/*", trainRoutes);
 app.use("/stations", stationRoutes);
 app.use("/routes", routeRoutes);
+app.use("/schedules", scheduleRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "development") {

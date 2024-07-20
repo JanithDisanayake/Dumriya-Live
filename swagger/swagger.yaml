@@ -8,6 +8,8 @@ paths:
   /users:
     get:
       summary: Get all users
+      tags: 
+        - Users
       security:
         - bearerAuth: []
       responses:
@@ -49,6 +51,8 @@ paths:
   /users/login:
     post:
       summary: User login
+      tags: 
+        - Users
       requestBody:
         required: true
         content:
@@ -84,6 +88,8 @@ paths:
   /users/register:
     post:
       summary: User registration
+      tags: 
+        - Users
       requestBody:
         required: true
         content:
@@ -112,10 +118,258 @@ paths:
               schema:
                 type: string
                 example: "Username and password are required"
+
+  /trains:
+    get:
+      summary: Get all trains
+      description: Retrieve a list of all trains
+      tags:
+        - Trains
+      responses:
+        '200':
+          description: A list of trains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+        '500':
+          description: Internal server error
+    post:
+      summary: Register a new train
+      description: Create a new train
+      tags:
+        - Trains
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainInput'
+      responses:
+        '201':
+          description: Train created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+  /stations:
+    get:
+      summary: Get all stations
+      description: Retrieve a list of all train stations
+      tags:
+        - Stations
+      responses:
+        '200':
+          description: A list of stations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Station'
+        '500':
+          description: Internal server error
+    post:
+      summary: Register a new station
+      description: Create a new train station
+      tags:
+        - Stations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationInput'
+      responses:
+        '201':
+          description: Station created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+  /routes:
+    get:
+      summary: Get all routes
+      description: Retrieve a list of all train routes
+      tags:
+        - Routes
+      responses:
+        '200':
+          description: A list of routes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+        '500':
+          description: Internal server error
+    post:
+      summary: Register a new route
+      description: Create a new train route
+      tags:
+        - Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteInput'
+      responses:
+        '201':
+          description: Route created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
+  schemas:
+    GeoLocation:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Point
+          description: The type of GeoLocation, must be "Point"
+          example: Point
+        coordinates:
+          type: array
+          items:
+            type: number
+          description: The coordinates of the GeoLocation as an array of two numbers (longitude and latitude)
+          example: [-73.856077, 40.848447]
+      required:
+        - type
+        - coordinates
+    Train:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the train
+        name:
+          type: string
+          description: The name of the train
+        type:
+          type: string
+          description: The type of the train (e.g., cargo, passenger)
+      required:
+        - name
+        - type
+    TrainInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the train
+        type:
+          type: string
+          description: The type of the train (e.g., cargo, passenger)
+      required:
+        - name
+        - type
+    Station:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the station
+        name:
+          type: string
+          description: The name of the station
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+          description: The geographical location of the station
+      required:
+        - name
+        - location
+    StationInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the station
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+          description: The geographical location of the station
+      required:
+        - name
+        - location
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the route
+        start:
+          $ref: '#/components/schemas/Station'
+          description: The starting station of the route
+        end:
+          $ref: '#/components/schemas/Station'
+          description: The ending station of the route
+        distance:
+          type: number
+          description: The distance of the route in kilometers
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Station'
+          description: An array of stations along the route
+        coordinates:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoLocation'
+          description: The geographical coordinates of the route
+      required:
+        - start
+        - end
+        - coordinates
+    RouteInput:
+      type: object
+      properties:
+        start:
+          $ref: '#/components/schemas/StationInput'
+          description: The starting station of the route
+        end:
+          $ref: '#/components/schemas/StationInput'
+          description: The ending station of the route
+        distance:
+          type: number
+          description: The distance of the route in kilometers
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationInput'
+          description: An array of stations along the route
+        coordinates:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoLocation'
+          description: The geographical coordinates of the route
+      required:
+        - start
+        - end
+        - coordinates
