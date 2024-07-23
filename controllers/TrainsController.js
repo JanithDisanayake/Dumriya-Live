@@ -29,18 +29,16 @@ exports.storeLive = async (req, res) => {
   await trainLive.save();
   res.status(201).json(trainLive);
 }
+
 exports.getLiveLog = async (req, res) => {
   try {
-    console.log("Fetching logs...");
     const log = await TrainLiveLog.find();
-    console.log("Logs fetched:", log);
     res.status(200).json(log);
   } catch (error) {
     console.error("Error fetching logs:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 exports.storeLiveLog = async (req, res) => {
   const log = new TrainLiveLog({
