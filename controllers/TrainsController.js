@@ -23,6 +23,33 @@ exports.getLive = async (req, res) => {
 };
 
 exports.storeLive = async (req, res) => {
+  try {
+    // Extract engine ID from the request body
+    const { engineId, ...liveData } = req.body;
+
+    // Find the train by engine ID
+    const train = await Train.findOne({ "engine.id": engineId });
+
+    // Validate if the train exists and the engine ID matches
+    if (!train) {
+      return res.status(404).json({ message: "Train with the given engine ID not found" });
+    }
+
+    // Create a new TrainLive instance with the live data
+    const trainLive = new TrainLive({
+      ...liveData,
+      train: train._id // Associate the live data with the train
+    });
+
+    // Save the live data
+    await trainLive.save();
+
+    // Respond with the created live data
+    res.status(201).json(trainLive);
+  } catch (error) {
+    console.error("Error storing live data:", error);
+    res.status(500).json({ message: "Server error" });
+  }
   const trainLive = new TrainLive({
     ...req.body
   });
