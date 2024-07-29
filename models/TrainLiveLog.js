@@ -1,20 +1,16 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Train = require("./Train");
+const Device = require("./Device");
 const GeoLocation = require("./GeoLocation");
 
 const trainLiveLogSchema = new Schema({
-  train: {
-    type: Train.schema,
+  device: {
+    type: Device,
     required: true,
   },
   current_location: {
     type: GeoLocation,
     required: true,
-  },
-  role: {
-    type: String,
-    required: false,
   },
   reported_time: {
     type: Date,
@@ -23,5 +19,5 @@ const trainLiveLogSchema = new Schema({
   }
 });
 
-const TrainLiveLog = mongoose.model("TrainLiveLOg", trainLiveLogSchema);
+const TrainLiveLog = mongoose.model("TrainLiveLog", trainLiveLogSchema);
 module.exports = TrainLiveLog;
