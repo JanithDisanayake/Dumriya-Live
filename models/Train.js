@@ -16,9 +16,8 @@ const trainSchema = new Schema({
     required: true,
   },
   boxes: {
-    // TODO: Define the boxes model
-    type: Number
-  }
+    type: Number,
+  },
 });
 
 const Train = mongoose.model("Train", trainSchema);

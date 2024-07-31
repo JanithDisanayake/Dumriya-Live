@@ -1,20 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Device = new Schema({
   id: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: false,
   },
   role: {
     type: String,
-    enum: ['Engine', 'Mobile'],
-    required: true
+    enum: ["Engine", "Mobile"],
+    required: true,
   },
   status: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = Device;
+

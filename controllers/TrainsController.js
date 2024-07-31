@@ -1,6 +1,6 @@
 const Train = require("../models/Train.js");
 const TrainLive = require("../models/TrainLive.js");
-const TrainLiveLog = require("../models/TrainLiveLog.js")
+const TrainLiveLog = require("../models/TrainLiveLog.js");
 
 exports.getAll = async (req, res) => {
   const trains = await Train.find();
@@ -10,7 +10,9 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {};
 
 exports.register = async (req, res) => {
-  const train = new Train({ name: req.body.name, type: req.body.type });
+  const train = new Train({
+    ...req.body,
+  });
   await train.save();
   res.status(201).json(train);
 };
@@ -32,13 +34,15 @@ exports.storeLive = async (req, res) => {
 
     // Validate if the train exists and the engine ID matches
     if (!train) {
-      return res.status(404).json({ message: "Train with the given engine ID not found" });
+      return res
+        .status(404)
+        .json({ message: "Train with the given engine ID not found" });
     }
 
     // Create a new TrainLive instance with the live data
     const trainLive = new TrainLive({
       ...liveData,
-      train: train._id // Associate the live data with the train
+      train: train._id, // Associate the live data with the train
     });
 
     // Save the live data
@@ -51,11 +55,11 @@ exports.storeLive = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
   const trainLive = new TrainLive({
-    ...req.body
+    ...req.body,
   });
   await trainLive.save();
   res.status(201).json(trainLive);
-}
+};
 
 exports.getLiveLog = async (req, res) => {
   try {
@@ -74,3 +78,4 @@ exports.storeLiveLog = async (req, res) => {
   await log.save();
   res.status(201).json(log);
 };
+
