@@ -20,7 +20,7 @@ const trainLiveSchema = new Schema({
   next_station: {
     type: Station.schema,
     required: true,
-  }
+  },
 });
 
 const TrainLive = mongoose.model("TrainLive", trainLiveSchema);

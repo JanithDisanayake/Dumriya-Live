@@ -27,13 +27,14 @@ exports.getLive = async (req, res) => {
 exports.storeLive = async (req, res) => {
   try {
     // Extract engine ID from the request body
-    const { engineId, ...liveData } = req.body;
+    const { train, ...liveData } = req.body;
+    const engineId = req.body;
 
     // Find the train by engine ID
-    const train = await Train.findOne({ "engine.id": engineId });
+    const tr = await Train.exists({ ...train });
 
     // Validate if the train exists and the engine ID matches
-    if (!train) {
+    if (!tr) {
       return res
         .status(404)
         .json({ message: "Train with the given engine ID not found" });
@@ -72,10 +73,29 @@ exports.getLiveLog = async (req, res) => {
 };
 
 exports.storeLiveLog = async (req, res) => {
-  const log = new TrainLiveLog({
-    ...req.body,
-  });
-  await log.save();
-  res.status(201).json(log);
+  try {
+    const log = new TrainLiveLog({
+      ...req.body,
+    });
+
+    await log.save();
+    await updateLive(log);
+
+    res.status(201).json(log);
+  } catch (error) {
+    console.error("Error storing live log:", error);
+    res.status(500).json({ message: "Server error1" });
+  }
 };
 
+const updateLive = (trainLiveLog) => {
+  try {
+    TrainLive.updateOne(
+      { "engines.id": trainLiveLog.device.id }, // Query to find the document
+      { $set: { current_location: trainLiveLog.current_location } }, // Fields to update
+    );
+  } catch (error) {
+    console.error("Error storing live log:", error);
+    res.status(500).json({ message: "Server error2" });
+  }
+};
