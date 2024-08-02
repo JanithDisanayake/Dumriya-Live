@@ -78,7 +78,7 @@ exports.storeLiveLog = async (req, res) => {
       ...req.body,
     });
     await log.save();
-    console.log("Live log stored:", log);
+    console.log("\n Live log stored:", log);
     updateLive(req.body);
 
     res.status(201).json(log);
@@ -90,15 +90,20 @@ exports.storeLiveLog = async (req, res) => {
 
 const updateLive = async (trainLiveLog) => {
   try {
-    const result = await TrainLive.updateOne(
-      { engines: { $elemMatch: { _id: trainLiveLog.device._id } } }, // Query to find the document
-      { $set: { current_location: trainLiveLog.current_location } } // Fields to update
-    );
+    const trainDocument = await TrainLive.findOne({
+        "train.engines._id": trainLiveLog.device._id
+    });
 
-    console.log("number of modified documents:", result.modifiedCount);
-    if (result.modifiedCount > 0) {
-      console.log("updateLive", trainLiveLog.current_location);
-    } else {
+    if (trainDocument) {
+        // Update the current location of the trainLive document
+        console.log('\n Train found:', trainDocument);
+        await TrainLive.updateOne(
+            { "_id": trainDocument._id },
+            { $set: { "current_location": trainLiveLog.current_location } }
+        );
+        console.log('\n Current location updated successfully.');
+    }
+    else {
       // No matching engine found, create a new TrainLive document
       const train = await Train.findOne({ "engines._id": trainLiveLog.device._id });
       if (train) {
@@ -110,12 +115,12 @@ const updateLive = async (trainLiveLog) => {
           next_station: null, // Assuming next_station details are in trainLiveLog
         });
         await newTrainLive.save();
-
+        console.log("\n New train live data created:");
       } else {
-        console.log("No train found with the specified device ID.");
+        console.log("\n No train found with the specified device ID.");
       }
     }
   } catch (error) {
-    console.error("Error updating live log:", error);
+    console.error("\n Error updating live log:", error);
   }
 };
