@@ -77,9 +77,9 @@ exports.storeLiveLog = async (req, res) => {
     const log = new TrainLiveLog({
       ...req.body,
     });
-
     await log.save();
-    await updateLive(log);
+    console.log("Live log stored:", log);
+    updateLive(req.body);
 
     res.status(201).json(log);
   } catch (error) {
@@ -88,14 +88,34 @@ exports.storeLiveLog = async (req, res) => {
   }
 };
 
-const updateLive = (trainLiveLog) => {
+const updateLive = async (trainLiveLog) => {
   try {
-    TrainLive.updateOne(
-      { "engines.id": trainLiveLog.device.id }, // Query to find the document
-      { $set: { current_location: trainLiveLog.current_location } }, // Fields to update
+    const result = await TrainLive.updateOne(
+      { engines: { $elemMatch: { _id: trainLiveLog.device._id } } }, // Query to find the document
+      { $set: { current_location: trainLiveLog.current_location } } // Fields to update
     );
+
+    console.log("number of modified documents:", result.modifiedCount);
+    if (result.modifiedCount > 0) {
+      console.log("updateLive", trainLiveLog.current_location);
+    } else {
+      // No matching engine found, create a new TrainLive document
+      const train = await Train.findOne({ "engines._id": trainLiveLog.device._id });
+      if (train) {
+        console.log("Train found:", train);
+        const newTrainLive = new TrainLive({
+          train: train, 
+          current_location: trainLiveLog.current_location,
+          previous_station: null,
+          next_station: null, // Assuming next_station details are in trainLiveLog
+        });
+        await newTrainLive.save();
+
+      } else {
+        console.log("No train found with the specified device ID.");
+      }
+    }
   } catch (error) {
-    console.error("Error storing live log:", error);
-    res.status(500).json({ message: "Server error2" });
+    console.error("Error updating live log:", error);
   }
 };

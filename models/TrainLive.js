@@ -15,11 +15,11 @@ const trainLiveSchema = new Schema({
   },
   previous_station: {
     type: Station.schema,
-    required: true,
+    required: false,
   },
   next_station: {
     type: Station.schema,
-    required: true,
+    required: false,
   },
 });
 
