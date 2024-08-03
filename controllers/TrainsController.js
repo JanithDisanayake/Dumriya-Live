@@ -24,6 +24,22 @@ exports.getLive = async (req, res) => {
   res.status(200).json(trainLive);
 };
 
+exports.getLiveById = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract ID from request parameters
+    const trainLive = await TrainLive.findById(id); // Find the TrainLive document by ID
+
+    if (!trainLive) {
+      return res.status(404).json({ message: 'TrainLive not found' }); // Handle case where document is not found
+    }
+
+    res.status(200).json(trainLive); // Send the found document as a response
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ message: 'Server error' }); // Handle any other errors
+  }
+};
+
 exports.storeLive = async (req, res) => {
   try {
     // Extract engine ID from the request body
