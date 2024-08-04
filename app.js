@@ -3,6 +3,7 @@ const express = require("express");
 const serverless = require("serverless-http");
 const connectDB = require("./db");
 const path = require("path");
+let cors = require('cors')
 const app = express();
 const port = process.env.PORT;
 // Swagger
@@ -21,6 +22,7 @@ connectDB();
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
