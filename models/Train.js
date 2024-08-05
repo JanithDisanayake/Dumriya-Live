@@ -13,10 +13,11 @@ const trainSchema = new Schema({
   },
   engines: {
     type: [Device],
-    required: true,
+    required: false,
   },
   boxes: {
     type: Number,
+    required: false,
   },
 });
 
