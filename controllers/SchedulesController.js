@@ -2,16 +2,32 @@ const Schedule = require("../models/Schedule");
 
 exports.getAll = async (req, res) => {
   const schedule = await Schedule.find();
+  // handle erros
+  if (!schedule) {
+    return res.status(404).json({ error: "Schedules not found" });
+  }
+
   res.status(200).json(schedule);
 };
 
-exports.getById = async (req, res) => {};
+exports.getById = async (req, res) => {
+  const schedule = await Schedule.findById(req.params.id);
+  
+  if (!schedule) {
+    return res.status(404).json({ error: "Schedule not found" });
+  }
+  res.status(200).json(schedule);
+};
 
 exports.store = async (req, res) => {
   const schedule = new Schedule({
     ...req.body
   });
-  await scheduleX.save();
+  
+  if (!schedule) {
+    return res.status(400).json({ error: "Error creating schedule"});
+  }
+  await schedule.save();
   res.status(201).json(schedule);
 };
 
