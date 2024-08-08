@@ -2,11 +2,10 @@ const Schedule = require("../models/Schedule");
 
 exports.getAll = async (req, res) => {
   const schedule = await Schedule.find();
-  // handle erros
+
   if (!schedule) {
     return res.status(404).json({ error: "Schedules not found" });
   }
-
   res.status(200).json(schedule);
 };
 

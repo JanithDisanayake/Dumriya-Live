@@ -5,7 +5,13 @@ exports.getAll = async (req, res) => {
   res.status(200).json(routes);
 };
 
-exports.getById = async (req, res) => {};
+exports.getById = async (req, res) => {
+  const route = await Route.findById(req.params.id);
+  if (!route) {
+    return res.status(404).json({ error: "Route not found" });
+  }
+  res.status(200).json(route);
+};
 
 exports.register = async (req, res) => {
   const route = new Route({
