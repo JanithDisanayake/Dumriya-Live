@@ -10,14 +10,6 @@ const scheduleSchema = new Schema({
     type: Train.schema,
     required: true,
   },
-  start_station: {
-    type: Station.schema,
-    required: true,
-  },
-  destination_station: {
-    type: Station.schema,
-    required: true,
-  },
   route: {
     type: Route.schema,
     required: true,
