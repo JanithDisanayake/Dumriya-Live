@@ -1,3 +1,4 @@
+const Schedule = require("../models/Schedule.js");
 const Train = require("../models/Train.js");
 const TrainLive = require("../models/TrainLive.js");
 const TrainLiveLog = require("../models/TrainLiveLog.js");
@@ -27,8 +28,7 @@ exports.getLive = async (req, res) => {
 exports.getLiveById = async (req, res) => {
   try {
     const { id } = req.params; // Extract ID from request parameters
-    const trainLive = await TrainLive.findById(id); // Find the TrainLive document by ID
-
+    const trainLive = await TrainLive.findOne({ "train._id": id }); // Find the TrainLive document by ID)
     if (!trainLive) {
       return res.status(404).json({ message: 'TrainLive not found' }); // Handle case where document is not found
     }
@@ -121,7 +121,8 @@ const updateLive = async (trainLiveLog) => {
     }
     else {
       // No matching engine found, create a new TrainLive document
-      const train = await Train.findOne({ "engines._id": trainLiveLog.device._id });
+      const schedule = await Schedule.findOne({ "train.engines._id": trainLiveLog.device._id });
+      const train = schedule.train
       if (train) {
         console.log("Train found:", train);
         const newTrainLive = new TrainLive({
