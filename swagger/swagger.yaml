@@ -201,10 +201,10 @@ paths:
 
   /routes:
     get:
-      summary: Get all routes
-      description: Retrieve a list of all train routes
       tags:
         - Routes
+      summary: Get all routes
+      description: Retrieve a list of all train routes
       responses:
         '200':
           description: A list of routes
@@ -214,30 +214,86 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Route'
-        '500':
-          description: Internal server error
-    post:
-      summary: Register a new route
-      description: Create a new train route
+  /routes/{id}:
+    get:
       tags:
         - Routes
+      summary: Get route by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The route ID
+      responses:
+        '200':
+          description: Route found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '404':
+          description: Route not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Route not found
+    post:
+      tags:
+        - Routes
+      summary: Register a new route
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteInput'
+              $ref: '#/components/schemas/Route'
       responses:
         '201':
-          description: Route created successfully
+          description: Route registered
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
-        '400':
-          description: Bad request
-        '500':
-          description: Internal server error
+    put:
+      tags:
+        - Routes
+      summary: Update a route
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The route ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+      responses:
+        '200':
+          description: Route updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '404':
+          description: Route not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Route not found
 
 components:
   securitySchemes:
