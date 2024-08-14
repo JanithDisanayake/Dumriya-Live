@@ -294,6 +294,101 @@ paths:
                   error:
                     type: string
                     example: Route not found
+  /schedules:
+    get:
+      tags:
+        - Schedules
+      summary: Get all schedules
+      responses:
+        '200':
+          description: A list of schedules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+    post:
+      tags:
+        - Schedules
+      summary: Register a new schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+      responses:
+        '201':
+          description: Schedule registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /schedules/{id}:
+    get:
+      tags:
+        - Schedules
+      summary: Get schedule by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The schedule ID
+      responses:
+        '200':
+          description: Schedule found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '404':
+          description: Schedule not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Schedule not found
+    put:
+      tags:
+        - Schedules
+      summary: Update a schedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The schedule ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+      responses:
+        '200':
+          description: Schedule updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '404':
+          description: Schedule not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Schedule not found
+
 
 components:
   securitySchemes:
