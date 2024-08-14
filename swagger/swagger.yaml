@@ -214,6 +214,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Route'
+    post:
+      tags:
+        - Routes
+      summary: Register a new route
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+      responses:
+        '201':
+          description: Route registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
   /routes/{id}:
     get:
       tags:
@@ -243,23 +260,6 @@ paths:
                   error:
                     type: string
                     example: Route not found
-    post:
-      tags:
-        - Routes
-      summary: Register a new route
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Route'
-      responses:
-        '201':
-          description: Route registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route'
     put:
       tags:
         - Routes
