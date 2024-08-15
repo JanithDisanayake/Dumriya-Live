@@ -548,16 +548,21 @@ components:
       properties:
         id:
           type: string
+          format: objectId
           description: The unique identifier for the train
         name:
           type: string
           description: The name of the train
         type:
           type: string
-          description: The type of the train (e.g., cargo, passenger)
+          description: The type of the train
+        capacity:
+          type: integer
+          description: The capacity of the train
       required:
         - name
         - type
+        - capacity
     TrainInput:
       type: object
       properties:
@@ -573,56 +578,84 @@ components:
     TrainLive:
       type: object
       properties:
+        id:
+          type: string
+          format: objectId
+          description: The unique identifier for the live train data
         train:
           $ref: '#/components/schemas/Train'
         current_location:
-          $ref: '#/components/schemas/GeoLocation'
+          type: string
+          description: The current location of the train
         previous_station:
-          $ref: '#/components/schemas/Station'
+          type: string
+          description: The previous station of the train
         next_station:
-          $ref: '#/components/schemas/Station'
+          type: string
+          description: The next station of the train
       required:
         - train
         - current_location
     TrainLiveLog:
       type: object
       properties:
-        device:
-          $ref: '#/components/schemas/Device'
-        current_location:
-          $ref: '#/components/schemas/GeoLocation'
-        reported_time:
+        id:
           type: string
-          format: date-time
-          description: The time the log was reported
+          format: objectId
+          description: The unique identifier for the live train log
+        device:
+          type: object
+          properties:
+            _id:
+              type: string
+              description: The device ID
+        current_location:
+          type: string
+          description: The current location of the train
       required:
         - device
         - current_location
-        - reported_time
     Station:
       type: object
       properties:
         id:
           type: string
+          format: objectId
           description: The unique identifier for the station
         name:
           type: string
           description: The name of the station
         location:
-          $ref: '#/components/schemas/GeoLocation'
-          description: The geographical location of the station
+          type: object
+          properties:
+            latitude:
+              type: number
+              format: double
+              description: The latitude of the station
+            longitude:
+              type: number
+              format: double
+              description: The longitude of the station
       required:
         - name
         - location
-    StationInput:
+    Station:
       type: object
       properties:
         name:
           type: string
           description: The name of the station
         location:
-          $ref: '#/components/schemas/GeoLocation'
-          description: The geographical location of the station
+          type: object
+          properties:
+            latitude:
+              type: number
+              format: double
+              description: The latitude of the station
+            longitude:
+              type: number
+              format: double
+              description: The longitude of the station
       required:
         - name
         - location
