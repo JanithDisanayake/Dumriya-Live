@@ -121,10 +121,9 @@ paths:
 
   /trains:
     get:
-      summary: Get all trains
-      description: Retrieve a list of all trains
       tags:
         - Trains
+      summary: Get all trains
       responses:
         '200':
           description: A list of trains
@@ -134,30 +133,177 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Train'
-        '500':
-          description: Internal server error
     post:
-      summary: Register a new train
-      description: Create a new train
       tags:
         - Trains
+      summary: Register a new train
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TrainInput'
+              $ref: '#/components/schemas/Train'
       responses:
         '201':
-          description: Train created successfully
+          description: Train registered
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Train'
-        '400':
-          description: Bad request
-        '500':
-          description: Internal server error
+  /trains/{id}:
+    get:
+      tags:
+        - Trains
+      summary: Get train by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      responses:
+        '200':
+          description: Train found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '404':
+          description: Train not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Train not found
+    put:
+      tags:
+        - Trains
+      summary: Update a train
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+      responses:
+        '200':
+          description: Train updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '404':
+          description: Train not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Train not found
+  /trains/live:
+    get:
+      tags:
+        - Trains
+      summary: Get live train data
+      responses:
+        '200':
+          description: A list of live train data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrainLive'
+    post:
+      tags:
+        - Trains
+      summary: Store live train data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainLive'
+      responses:
+        '201':
+          description: Live train data stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainLive'
+  /trains/live/{id}:
+    get:
+      tags:
+        - Trains
+      summary: Get live train data by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      responses:
+        '200':
+          description: Live train data found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainLive'
+        '404':
+          description: Live train data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: TrainLive not found
+  /trains/live_log:
+    get:
+      tags:
+        - Trains
+      summary: Get live train logs
+      responses:
+        '200':
+          description: A list of live train logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrainLiveLog'
+    post:
+      tags:
+        - Trains
+      summary: Store live train log
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainLiveLog'
+      responses:
+        '201':
+          description: Live train log stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainLiveLog'
 
   /stations:
     get:
