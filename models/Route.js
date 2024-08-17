@@ -15,9 +15,9 @@ const routeSchema = new Schema({
   distance: {
     type: Number,
   },
-  halt_stations: {
+  stations: {
     type: [Station.schema],
-  }
+  },
 });
 
 const Route = mongoose.model("Route", routeSchema);

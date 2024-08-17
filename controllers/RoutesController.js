@@ -6,7 +6,9 @@ exports.getAll = async (req, res) => {
     res.status(200).json(routes);
   } catch (error) {
     console.error("Error fetching routes:", error); // Log the error for debugging
-    res.status(500).json({ message: "An error occurred while fetching routes" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching routes" });
   }
 };
 
@@ -26,7 +28,9 @@ exports.getById = async (req, res) => {
     res.status(200).json(route);
   } catch (error) {
     console.error("Error fetching route by ID:", error); // Log the error for debugging
-    res.status(500).json({ message: "An error occurred while fetching the route." });
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching the route." });
   }
 };
 
@@ -36,19 +40,17 @@ exports.register = async (req, res) => {
 
     if (!start || !end || isNaN(distance)) {
       return res.status(400).json({
-        message: "Invalid input. 'start', 'end' are required, and 'distance' must be a number.",
+        message:
+          "Invalid input. 'start', 'end' are required, and 'distance' must be a number.",
       });
     }
 
     const route = new Route({
-      start,
-      end,
-      distance,
+      ...req.body,
     });
 
     await route.save();
     res.status(201).json(route);
-
   } catch (error) {
     console.error("Error registering route:", error);
 

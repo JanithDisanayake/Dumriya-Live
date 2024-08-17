@@ -21,7 +21,10 @@ const scheduleSchema = new Schema({
   arrival_time: {
     type: Date,
     requred: true,
-  }
+  },
+  halt_stations: {
+    type: [Station.schema],
+  },
 });
 
 const Schedule = mongoose.model("Schedule", scheduleSchema);
