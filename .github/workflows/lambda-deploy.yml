@@ -44,17 +44,17 @@ jobs:
       run: |
         aws lambda update-function-code --function-name TestImage2 --image-uri 144901196852.dkr.ecr.us-east-1.amazonaws.com/web-api:latest
 
+    - name: Check if docs.yaml exists
+      run: ls -l .github/workflows/api-docs.yaml
+
     - name: Import API Definition to API Gateway
       run: |
-        export API_ID="lm0vcv8786"
-        aws apigateway put-rest-api \
-          --rest-api-id $API_ID \
-          --mode overwrite \
+        aws apigateway update-rest-api \
+          --rest-api-id "lm0vcv8786" \
           --body 'file://.github/workflows/api-docs.yaml'
 
     - name: Deploy API Gateway
       run: |
-        export STAGE="prod"
         aws apigateway create-deployment \
-          --rest-api-id $API_ID \
-          --stage-name $STAGE
+          --rest-api-id "lm0vcv8786" \
+          --stage-name prod
