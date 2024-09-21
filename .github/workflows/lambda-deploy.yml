@@ -47,6 +47,9 @@ jobs:
     - name: Check if docs.yaml exists
       run: ls -l .github/workflows/api-docs.yaml
 
+    - name: Check if API Gatway exists
+      run: aws apigateway get-rest-apis --region us-east-1
+
     - name: Import API Definition to API Gateway
       run: |
         # Set the API Gateway ID (replace with your actual API ID)
