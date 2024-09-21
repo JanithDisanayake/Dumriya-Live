@@ -43,3 +43,16 @@ jobs:
     - name: Update Lambda function
       run: |
         aws lambda update-function-code --function-name TestImage2 --image-uri 144901196852.dkr.ecr.us-east-1.amazonaws.com/web-api:latest
+
+    - name: Import OpenAPI Definition to API Gateway
+      run: |
+        aws apigateway import-rest-api \
+        --body 'file://.github/workflows/api-docs.yaml'
+      
+    - name: Deploy API Gateway
+      run: |
+        export API_ID="lm0vcv8786"
+        export STAGE="qa"  
+        aws apigateway create-deployment \
+        --rest-api-id $API_ID \
+        --stage-name $STAGE
