@@ -49,12 +49,22 @@ jobs:
 
     - name: Import API Definition to API Gateway
       run: |
-        aws apigateway update-rest-api \
-          --rest-api-id "lm0vcv8786" \
-          --body 'file://.github/workflows/api-docs.yaml'
+        # Set the API Gateway ID (replace with your actual API ID)
+        export API_ID="lm0vcv8786"
+
+        # Use put-rest-api to update or import the API definition
+        aws apigateway put-rest-api \
+          --rest-api-id $API_ID \
+          --mode overwrite \
+          --body 'file://.github/workflows/api-docs.yaml' \
+          --debug  # Use --debug to get detailed logs for troubleshooting
 
     - name: Deploy API Gateway
       run: |
+        export STAGE="prod"  # or any other stage you want to deploy to
+
+        # Create the deployment for the API Gateway stage
         aws apigateway create-deployment \
-          --rest-api-id "lm0vcv8786" \
-          --stage-name prod
+          --rest-api-id $API_ID \
+          --stage-name $STAGE \
+          --debug
